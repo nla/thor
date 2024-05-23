@@ -32,7 +32,6 @@ import thor.util.LockedTask;
 public class FileStorageService<T extends Storable>
 {
     private static final String STORABLE_ID_PATTERN = "[a-zA-Z0-9_\\-]+";
-    private static final String TEMP_FOLDER = "_tmp";
 
     private String basePath;
     private Path basePathP;
@@ -43,11 +42,13 @@ public class FileStorageService<T extends Storable>
      * Initialise an instance with the specified storage directory.
      *
      * @param basePath       the directory in which to store {@link thor.Storable} objects
+     * @param tempPath       the directory in which to story temporary files (used to temporarily store saved files before atmomically moving them into the basePath)
      */
 
-    public FileStorageService(String basePath) throws Exception
+    public FileStorageService(String basePath, String tempPath) throws Exception
     {
         this.basePath = basePath;
+        this.tempPath = tempPath;
         this.lockService = new LockService();
         initialize();
     }
@@ -55,14 +56,13 @@ public class FileStorageService<T extends Storable>
     private void initialize() throws Exception
     {
         File file = new File(basePath);
-
+        
         if(!file.exists())
         {
             file.mkdirs();
         }
         
         basePathP = file.toPath();
-        tempPath = basePath+"/"+TEMP_FOLDER;
         
         file = new File(tempPath);
 
