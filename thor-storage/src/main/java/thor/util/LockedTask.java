@@ -12,6 +12,6 @@ public interface LockedTask<T>
      *
      * @return       the object you want to return to the caller of the {@link LockService}.
      */
-    
-	public T execute() throws Exception;
+
+    public T execute() throws Exception;
 }
