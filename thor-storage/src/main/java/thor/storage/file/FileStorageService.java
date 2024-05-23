@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.FileOutputStream;
@@ -31,9 +32,11 @@ import thor.util.LockedTask;
 public class FileStorageService<T extends Storable>
 {
     private static final String STORABLE_ID_PATTERN = "[a-zA-Z0-9_\\-]+";
+    private static final String TEMP_FOLDER = "_tmp";
 
     private String basePath;
     private Path basePathP;
+    private String tempPath;
     private LockService lockService;
 
     /** 
@@ -57,8 +60,16 @@ public class FileStorageService<T extends Storable>
         {
             file.mkdirs();
         }
-
+        
         basePathP = file.toPath();
+        tempPath = basePath+"/"+TEMP_FOLDER;
+        
+        file = new File(tempPath);
+
+        if(!file.exists())
+        {
+            file.mkdirs();
+        }
     }
 
     private void validateId(String id) throws Exception
@@ -101,7 +112,7 @@ public class FileStorageService<T extends Storable>
         lockService.runLockedTask(id, new LockedTask<Void>(){
             public Void execute() throws Exception
             {
-                File tempFile = new File(basePath+"/"+id+".tmp");
+                File tempFile = new File(tempPath+"/"+id);
                 
                 try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tempFile)))
                 {
@@ -198,7 +209,11 @@ public class FileStorageService<T extends Storable>
             {
                 if(from>=i)
                 {
-                    receiver.take(load(entry.getFileName().toString()));
+                    try
+                    {
+                        receiver.take(load(entry.getFileName().toString()));  
+                    }
+                    catch(StorableNotFoundException e){} // For cases where items may be deleted during this iteration
                 }
 
                 i++;
@@ -280,7 +295,7 @@ public class FileStorageService<T extends Storable>
     public int size() throws Exception
     {
         int count = 0;
-
+        
         try(DirectoryStream<Path> stream = Files.newDirectoryStream(basePathP))
         {
             for(Path entry: stream)
