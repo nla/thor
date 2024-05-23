@@ -101,12 +101,15 @@ public class FileStorageService<T extends Storable>
         lockService.runLockedTask(id, new LockedTask<Void>(){
             public Void execute() throws Exception
             {
-                try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(basePath+"/"+id))))
+                File tempFile = new File(basePath+"/"+id+".tmp");
+                
+                try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(tempFile)))
                 {
                     out.writeObject(storable);
                     out.flush();
                 }
-
+                
+                Files.move(tempFile.toPath(), new File(basePath+"/"+id).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
                 return null;
             }
         });
