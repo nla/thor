@@ -207,7 +207,7 @@ public class FileStorageService<T extends Storable>
 
             for(Path entry: stream)
             {
-                if(from>=i)
+                if(from<=i)
                 {
                     try
                     {
