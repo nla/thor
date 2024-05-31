@@ -1,0 +1,25 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>au.gov.nla.thor</groupId>
+    <artifactId>thor-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <modules>
+        <module>thor-common</module>
+        <module>thor-server</module>
+    </modules>
+  
+    <distributionManagement>
+        <repository>
+            <id>nla-public-releases</id>
+            <url>https://dev.nla.gov.au/nexus/content/repositories/nla-public/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nla-public-snapshots</id>
+            <url>https://dev.nla.gov.au/nexus/content/repositories/nla-public-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
