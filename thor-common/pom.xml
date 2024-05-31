@@ -5,7 +5,7 @@
   <parent>
         <groupId>au.gov.nla.thor</groupId>
         <artifactId>thor-parent</artifactId>
-        <version>${revision}</version>
+        <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>odin-common</artifactId>
+  <artifactId>thor-common</artifactId>
 </project>
