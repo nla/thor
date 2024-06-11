@@ -8,6 +8,12 @@
         <version>0.0.2-SNAPSHOT</version>
   </parent>
   <artifactId>thor-server</artifactId>
+
+  <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+         
   <dependencies>
   	<dependency>
   		<groupId>au.gov.nla.thor</groupId>
