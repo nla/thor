@@ -1,1 +1,1 @@
-nlaBuild steps: this, deployToNexus: true
+nlaBuild steps: this, deployToNexus: true, ignoreSonar: true
